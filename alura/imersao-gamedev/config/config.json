@@ -1,0 +1,32 @@
+{
+  "setup": {
+    "maxLife": 3,
+    "initialLife": 3
+  },
+  "map": [
+    {
+      "inimigo": 0,
+      "velocidade": 27
+    },
+    {
+      "inimigo": 2,
+      "velocidade": 19
+    },
+    {
+      "inimigo": 0,
+      "velocidade": 20
+    },
+    {
+      "inimigo": 1,
+      "velocidade": 29
+    },
+    {
+      "inimigo": 2,
+      "velocidade": 22
+    },
+    {
+      "inimigo": 1,
+      "velocidade": 21
+    }
+  ]
+}
