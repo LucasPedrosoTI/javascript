@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "resolutions": {
+    "debug": "3.2.6",
+    "ms": "2.1.2",
+    "safe-buffer": "5.2.0",
+    "http-errors": "1.7.3",
+    "inherits": "2.0.4"
+  }
+}
