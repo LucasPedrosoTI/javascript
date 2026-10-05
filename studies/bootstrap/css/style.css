@@ -1,0 +1,30 @@
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.quem-somos {
+    background-color: #8181f7;
+    color: #fff;
+}
+
+.margin {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.parceiros {
+    background-color: #ccc;
+}
+
+.servicos {
+    background-color: #8181f7;
+    color: #fff;
+}
+
+.bg-footer {
+    background-color: #f8f9fa;
+    color: #212529;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    padding: 0px;
+}
