@@ -1,0 +1,23 @@
+.container {
+  color: #3a61d0;
+  background-color: #fff;
+  box-shadow: 5px 5px 20px #ccc;
+  margin-top: 20px;
+  height: fit-content;
+  border-radius: 5px;
+}
+
+.title {
+  padding: 15px 20px;
+  font-size: 12px;
+  background-color: #f8f9fc;
+  border-bottom: 2px solid #ddd;
+  border-radius: 5px 5px 0 0;
+}
+
+.detail_container {
+  padding: 20px;
+  font-size: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}

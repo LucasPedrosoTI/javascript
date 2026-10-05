@@ -1,0 +1,12 @@
+.card_wrapper {
+  background-color: rgb(54, 185, 204);
+  color: #fff;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.card_wrapper p {
+  color: #fff;
+  margin: 0;
+}

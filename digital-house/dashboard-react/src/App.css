@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.App {
+  text-align: center;
+  background-color: #eee;
+  height: 100%;
+  display: flex;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+main {
+  width: 80%;
+  text-align: left;
+}
+
+.main_container {
+  padding: 15px 20px;
+  color: #545664;
+}
+
+.main_container h2 {
+  font-weight: normal;
+  margin-bottom: 15px;
+}
+
+.cards_container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.lstproduct_category_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 20px;
+}

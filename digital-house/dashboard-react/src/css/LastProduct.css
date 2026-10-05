@@ -1,0 +1,27 @@
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  border: none;
+  background-color: unset;
+  color: inherit;
+  cursor: pointer;
+}
+
+.wrapper {
+  grid-column: first / last;
+}
+
+.detail_img {
+  padding: 20px;
+}
+.detail_img img {
+  width: 100%;
+}
+
+.detail_container p {
+  color: #555b;
+  margin-bottom: 15px;
+}
