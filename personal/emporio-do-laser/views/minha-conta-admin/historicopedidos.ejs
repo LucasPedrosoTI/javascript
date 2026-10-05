@@ -1,0 +1,95 @@
+<%- include('../components/head') %> <%- include('../components/navbar') %>
+<% const currencyFormatter = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', }) %>
+<% const dateFormatter = new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }) %>
+
+
+<section>
+  <div class="corpo container-fluid text-branco">
+    <div class="row g-1">
+      <%- include('../components/lateral-menu') %>
+
+      <div class="col-sm px-3">
+        <h4><%= filtro == 'Todos' ? 'Histórico de Pedidos' : pedidoStatus[filtro - 1].descricao %></h4>
+        <hr class="mb-4" />
+
+        <!-- CODIGO AQUI -->
+        <div class="list-group max-width-610p centraliza-itens">
+
+          <div class="list-group-item list-group-item-action my-2">
+            <form class="row g-1" action="/minha-conta/historicopedidos" method="get">
+              <div class="col-sm">
+                <button class="btn btn-outline-success w-100 my-1">Filtrar</button>
+              </div>
+              <div class="col-sm-8">
+                <select class="form-control my-1" name="filtro">
+                  <option value="Todos">Todos</option>
+                  <option value="5">Concluidos</option>
+                  <option value="6">Cancelados</option>
+                </select>
+              </div>
+            </form>
+          </div>
+
+          <!-- FOREACH -->
+          <% pedidos.forEach(pedido => { %>
+            <div onclick="detalharPedido('<%= pedido.id %>')" class="list-group-item list-group-item-action my-2" aria-current="true">
+              <div class="row g-1">
+                <strong class="col-sm m-w-130">Nº do Pedido</strong>
+                <p class="col-sm mb-1"><%= pedido.id %></p>
+              </div>
+
+              <div class="row g-1">
+                <strong class="col-sm m-w-130">Pagamento</strong>
+                <p class="col-sm mb-1"><%= pedido.TipoPagamento.nomeTipoPagamento %></p>
+              </div>
+              <div class="row g-1">
+                <strong class="col-sm m-w-130">Status</strong>
+                <p class="col-sm mb-1"><%= pedido.StatusPedido.descricao %></p>
+              </div>              
+              <div class="row g-1">
+                <strong class="col-sm m-w-130">Valor Total</strong>
+                <p class="col-sm mb-1"><%= currencyFormatter.format(pedido.subtotal) %></p>
+              </div>
+              <div class="row g-1">
+                <strong class="col-sm m-w-130">Data do Pedido</strong>
+                <p class="col-sm mb-1"><%= dateFormatter.format(pedido.createdAt)  %></p>
+              </div>
+              <div class="row g-1">
+                <strong class="col-sm m-w-130">Atualização</strong>
+                <p class="col-sm mb-1"><%= dateFormatter.format(pedido.updatedAt) %></p>
+              </div>
+              <!-- DETALHES DO PEDIDO -->
+              <div class="accordion accordion-flush my-2" id="accordionFlushExample_<%= pedido.id %>">
+                <div class="accordion-item">
+                  <span class="accordion-header" id="flush-headingOne_<%= pedido.id %>" title="Clique para ver detalhes do pedido.">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      style="padding: 7px 12px; border: 1px solid rgb(194, 194, 194); border-radius: 4px"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseOne_<%= pedido.id %>"
+                      aria-expanded="false"
+                      aria-controls="flush-collapseOne_<%= pedido.id %>"
+                    >
+                      Detalhes do Pedido
+                    </button>
+                  </span>
+                  <div id="flush-collapseOne_<%= pedido.id %>" class="accordion-collapse collapse" aria-labelledby="flush-headingOne_<%= pedido.id %>" data-bs-parent="#accordionFlushExample_<%= pedido.id %>">
+                    <div class="accordion-body"><%- include('../components/detalhePedido.ejs', {pedido}) %></div>
+                  </div>
+                </div>
+              </div>
+              <!-- Detalhes do Pedido -->
+            </div>   
+          <% }); %>
+          <!-- FINAL FOREACH -->
+
+        </div>
+        <!-- FIM DO CODIGO -->
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../components/foot') %>

@@ -1,0 +1,52 @@
+<%- include('../components/head') %> <%- include('../components/navbar') %> <% const ehPF = USUARIO.Cliente.ehPessoaFisica; %>
+
+<section>
+  <div class="corpo container-fluid text-branco">
+    <div class="row g-1">
+      <%- include('../components/lateral-menu') %>
+
+      <div class="col-sm px-3">
+        <h4>Meus Endereços</h4>
+        <hr class="mb-4" />
+        <%- include('../components/error-alert.ejs', {error}) %>
+        <div class="row g-3 max-width-610p">
+          <div class="col-sm-12">
+            <div class="list-group">
+              <div class="list-group-item list-group-item-action mb-2" aria-current="true">
+                <div class="row g-1">
+                  <a href="/minha-conta/cadastrarendereco" class="col-sm-12 btn btn-primary">Cadastrar Endereço</a>
+                </div>
+              </div>
+
+              <% enderecos.forEach(endereco => { %>
+              <div class="list-group-item list-group-item-action my-2" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1"><%= endereco.destinatario %></h5>
+                </div>
+                <div class="mb-3">
+                  <p class="mb-1"><%= endereco.rua %>, <%= endereco.numero %>, <%= endereco.complemento %> - <%= endereco.bairro %></p>
+                  <small><%= endereco.cidade %> - <%= endereco.estado %>, <%= endereco.cep %></small>
+                </div>
+
+                <div class="row">
+                  <form class="col-sm-6" action="/minha-conta/editarendereco" method="get">
+                    <input type="hidden" name="enderecoId" value="<%= endereco.id %>" />
+                    <input type="submit" value="Editar" class="btn btn-outline-secondary btn-tabela" />
+                  </form>
+
+                  <form class="col-sm-6" action="/usuarios/excluir-endereco?_method=DELETE" method="post">
+                    <input type="hidden" name="id" value="<%= endereco.id %>" />
+                    <input type="submit" value="Excluir" class="btn btn-outline-danger btn-tabela" onClick="if(!(confirm('Deseja mesmo excluir este endereço?'))) return false" />
+                  </form>
+                </div>
+              </div>
+              <% }); %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../components/foot') %>

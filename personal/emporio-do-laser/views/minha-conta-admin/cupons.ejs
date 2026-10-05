@@ -1,0 +1,63 @@
+<%- include('../components/head') %> <%- include('../components/navbar') %>
+
+<section>
+  <div class="corpo container-fluid text-branco">
+    <div class="row g-1">
+      <%- include('../components/lateral-menu') %>
+
+      <div class="col-sm px-3">
+        <h4>Cupons</h4>
+        <hr class="mb-4" />
+
+        <!-- CODIGO AQUI -->
+        <div class="row g-3 max-width-610p">
+          <div class="col-sm-12">
+            <div class="list-group">
+              <div class="list-group-item list-group-item-action mb-2" aria-current="true">
+                <div class="row g-1">
+                  <a href="/minha-conta/cadastrarcupons" class="col-sm-12 btn btn-primary">Cadastrar Cupom</a>
+                </div>
+              </div>
+
+              <% cupoms.forEach(cupom => { %>
+
+              <div class="list-group-item list-group-item-action my-2 <%= !cupom.habilitado && "o-70" %>" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-2"><%= cupom.codigo %></h5>
+                </div>
+                <div class="mb-3">
+                  <p class="mb-1">Tipo de Desconto: <%= cupom.ehPorcentagem ? 'Porcentagem' : 'Reais' %>, Taxa de Desconto: <%= cupom.taxaDeDesconto %></p>
+                  <p class="mb-1">Data Expiração: <span><%= cupom.dataExpiracao %></span></p>
+                  <p class="mb-1">
+                    Categoria: <% cupom.Categoria.forEach((categoria, index) => { %> <%= index + 1 === cupom.Categoria.length ? categoria.nomeCategoria : categoria.nomeCategoria + ', ' %> <% }) %>
+                  </p>
+                  <p class="mb-1">Descrição: <span><%= cupom.descricao %></span></p>
+                  <p class="mb-1">Status: <span><%= cupom.habilitado ? 'Habilitado' : 'Desabilitado' %></span></p>
+                </div>
+                <div class="row">
+                  <form class="col-sm-6 mb-2" action="/minha-conta/editarcupons" method="get">
+                    <input type="hidden" name="cupomId" value="<%= cupom.id %>" />
+                    <input type="submit" value="Editar" class="btn btn-outline-secondary btn-tabela" />
+                  </form>
+
+                  <% const acaoTxt = cupom.habilitado ? "Desabilitar" : "Habilitar" %>
+                  <% const acao = acaoTxt.toLowerCase() %>
+
+                  <form class="col-sm-6" action="/cupoms/habilitar-desabilitar?_method=PUT" method="post">
+                    <input type="hidden" name="id" value="<%= cupom.id %>" />
+                    <input type="hidden" name="habilitado" value="<%= cupom.habilitado ? '0' : '1' %>" />
+                    <input type="submit" value="<%= acaoTxt %>" class="btn btn-outline-<%= cupom.habilitado ? "danger" : "success" %> btn-tabela" onClick="if(!(confirm('Deseja mesmo <%= acao %> este cupom?'))) return false"/>
+                  </form>
+                </div>
+              </div>
+              <% }); %>
+            </div>
+          </div>
+        </div>
+        <!-- FIM DO CODIGO -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../components/foot') %>

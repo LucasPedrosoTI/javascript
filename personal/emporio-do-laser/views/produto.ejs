@@ -1,0 +1,106 @@
+<%- include('./components/head') %> <%- include('./components/navbar') %>
+
+<script src="/js/produto.js" defer></script>
+
+<div class="corpo">
+    <section>
+      <div class="container produto">
+        <div class="row">
+          <div class="col-md-12 align-items-center justify-content-center">
+              <form action="/carrinho/add-carrinho" method="post">
+                <input type="hidden" name="produtoId" value="<%= produto.id %> ">
+
+                <div class="row">
+                    <div class="col-md-6 my-2 col- align-items-center justify-content-center">
+                        <div class="d-flex align-items-center justify-content-center h-100">
+                            <% if (produto.ImagemProdutos.length > 1) { %>
+                              <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                </div>
+                                <div class="carousel-inner">
+                                  <% produto.ImagemProdutos.forEach((imagem, index) => { %>
+                                    <div class="carousel-item <%= index === 0 && 'active' %>">
+                                      <img src="<%= imagem.nomeImagem %> " class="imageproduct d-block w-100" alt="<%= produto.nomeProduto %>">
+                                    </div>
+                                  <% }) %>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <% } else { %>
+                              <img src="<%= produto.ImagemProdutos[0].nomeImagem %> " class="imageproduct rounded mx-auto d-block" alt="<%= produto.nomeProduto %>">
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="col-md-6 my-1 align-items-center justify-content-center">
+                        <div class="info-principal-produto" style="border-bottom: 1px solid #000;">
+                            <nav aria-label="breadcrumb">
+                              <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a style="color: rgba(0,0,0,.55); "href="/">Início</a></li>
+                                <li class="breadcrumb-item"><a style="color: rgba(0,0,0,.55);" href="/produtos">Produtos</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><%= produto.nomeProduto %> </li>
+                              </ol>
+                            </nav>
+                        </div>
+                        <div style="border-bottom: 1px solid #000;">
+                            <h1 class="nome-produto titulo" style="color: var(--primaria);"><%= produto.nomeProduto %> </h1>
+                        </div>
+                        <div style="margin-top: 20px;">
+                          <label for="tamanhoProduto" class="form-label" style="color: var(--primaria);">
+                          <h6>Tamanho:</h6>
+                          </label>
+                          <select class="form-select" name="tamanhoProduto" id="tamanhoProduto" required>
+                            <option value="" selected>Selecione um tamanho</option>
+                            <% produto.TamanhoProdutos.forEach(tProd => { %>
+                              <option value="<%= tProd.id %> "><%= tProd.tamanho %> </option>
+                            <% }) %>
+                          </select>
+
+                          <label class="mb-2 mt-4 form-label" style="color: var(--primaria);"><h6>Quantidade:</h6> </label>
+                          <input required min="1" disabled type="number" name="quantidade" id="quantidade" class="form-control">
+                          <small class="invisible" id="txtEstoque" >Estoque: <span id="estoque"></span> </small>
+
+
+                          <div style="margin-top: 30px;">
+                            <h5 class="mb-5"style="color: var(--primaria)">Preço: <span class="info-peso" id="precoProduto"></span></h5>
+                          </div>
+                        </div>
+
+                        <% if (produto.personalizavel) { %>              
+                          <h5 style="color: var(--primaria)">Design</h5>
+                          <div class="form-check form-switch custom-switch">
+                            <input class="form-check-input" type="checkbox" id="comLogomarca" name="comLogomarca">
+                            <label class="form-check-label" for="comLogomarca"><h6 class="titlepersonalizavel">Com logomarca</h6></label>
+                          </div>
+                        <% } %>
+
+
+                        <div class="info-comprar">
+                          <button type="submit" class="btn btn-default" style="background-color: var(--primaria); color: var(--secundaria);">Comprar</button>
+                        </div>
+                        
+                       
+
+                    </div>
+                </div>
+              </form>
+          </div>
+          <div class="col-md-12 align-items-center justify-content-center">
+            <div class="descricao-produto">
+              <h5>Descrição</h5>
+              <span>
+                <%= produto.descricao %> 
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+  </div>
+  
+  <%- include('./components/foot') %>

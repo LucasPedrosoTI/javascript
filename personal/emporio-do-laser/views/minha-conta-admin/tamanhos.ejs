@@ -1,0 +1,71 @@
+<%- include('../components/head') %> <%- include('../components/navbar') %>
+
+<section>
+  <div class="corpo container-fluid text-branco">
+    <div class="row g-1">
+      <%- include('../components/lateral-menu') %>
+
+      <div class="col-sm px-3">
+        <h4><%= produto.nomeProduto %></h4>
+        <hr class="mb-4" />
+
+        <!-- CODIGO AQUI -->
+        <div class="row g-3 max-width-610p">
+          <div class="col-sm-12">
+            <div class="list-group">
+              <div class="list-group-item list-group-item-action mb-3" aria-current="true">
+                <div class="row g-1">
+                  <form class="col-sm" action="/minha-conta/cadastrartamanho" method="get">
+                    <input type="hidden" name="produtoId" value="<%= produto.id %>" />
+                    <input type="submit" value="Cadastrar" class="btn btn btn-primary w-100" />
+                  </form>
+                </div>
+              </div>
+              <% tamanhos.forEach(tamanho => { %>
+              <div class="list-group-item list-group-item-action mb-3 <%= tamanho.deletedAt && "o-70" %>" aria-current="true">
+                <div class="row g-1 mb-2">
+                  <div class="col-sm d-flex justify-content-between mx-1">
+                    <div>
+                      <strong>Tamanho:</strong>
+                      <span><%= tamanho.tamanho %> </span>
+                    </div>
+                    <div>
+                      <strong>Estoque:</strong>
+                      <span><%= tamanho.quantidade %> </span>
+                    </div>
+                    <div>
+                      <strong>Peso:</strong>
+                      <span><%= tamanho.peso %> </span>
+                    </div>
+                    <div>
+                      <strong>Preço:</strong>
+                      <span class="mb-1"><%= tamanho.preco %> </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row g-1">
+                  <form class="col-sm" action="/minha-conta/editartamanho" method="get">
+                    <input type="hidden" name="tamanhoId" value="<%= tamanho.id %>" />
+                    <input type="submit" value="Editar" class="btn btn-outline-secondary btn-tabela" />
+                  </form>
+                  <% const acaoTxt = tamanho.deletedAt ? "Habilitar" : "Desabilitar" %> <% const acao = acaoTxt.toLowerCase() %>
+                  <form class="col-sm" action="/produtos/habilitar-desabilitar-tamanho?_method=PUT" method="post">
+                    <input type="hidden" name="tamanhoId" value="<%= tamanho.id %>" />
+                    <input type="hidden" name="produtoId" value="<%= produto.id %>" />
+                    <input type="hidden" name="acao" value="<%= acao %>" />
+                    <input type="submit" value="<%= acaoTxt %>" class="btn btn-outline-<%= tamanho.deletedAt ? "success" : "danger" %> btn-tabela"
+                    onClick="if(!(confirm('Deseja mesmo <%= acao %> este produto?'))) return false" />
+                  </form>
+                </div>
+              </div>
+              <% }); %>
+            </div>
+          </div>
+        </div>
+        <!-- FIM DO CODIGO -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../components/foot') %>

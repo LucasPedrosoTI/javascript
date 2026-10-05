@@ -1,0 +1,130 @@
+<%- include('components/head') %> <%- include('components/navbar') %> <% const ehPF = USUARIO.Cliente.ehPessoaFisica; %>
+
+<script src="/js/pagamento.js" defer></script>
+<script src="/js/frete.js" defer></script>
+<script src="/js/cupom.js" defer></script>
+
+<section class="corpo flex-fill">
+  <div class="container" style="background-color: #ffff; padding: 30px">
+    <form action="/carrinho/fechar-pedido" class="needs-validation" method="post" data-toggle="validator">
+      <div class="row">
+        <div class="col-md">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Meus Dados</span>
+          </h4>
+          <div class="col-md list-group-item mb-4">
+            <div class="d-flex w-100" style="max-height: 30px">
+              <i class="bi bi-person-badge-fill"></i>
+              <p class="ms-2"><%= ehPF ? USUARIO.Cliente.PessoaFisica.nome : USUARIO.Cliente.PessoaJuridica.razao_social %></p>
+            </div>
+            <div class="d-flex w-100" style="max-height: 30px">
+              <i class="bi bi-envelope"></i>
+              <p class="ms-2"><%= USUARIO.email %></p>
+            </div>
+            <div class="d-flex w-100" style="max-height: 30px">
+              <i class="bi bi-telephone-fill"></i>
+              <p class="ms-2"><%= USUARIO.Cliente.telefone %></p>
+            </div>
+            <div class="d-flex w-100" style="max-height: 30px">
+              <i class="bi bi-card-heading"></i>
+              <p class="ms-2"><%= ehPF ? USUARIO.Cliente.PessoaFisica.cpf : USUARIO.Cliente.PessoaJuridica.cnpj %></p>
+            </div>
+          </div>
+
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Endereço de Entrega</span>
+          </h4>
+          <% if (enderecos.length > 0) { %>
+          <div class="form-group">
+            <select class="form-select mb-2" id="selectEndereco" name="enderecoId" required>
+              <% enderecos.forEach(endereco => { %>
+              <option value="<%= endereco.id %>"><%= endereco.destinatario %></option>
+              <% }) %>
+            </select>
+            <div class="help-block with-errors"></div>
+          </div>
+
+          <div class="list-group-item mb-4">
+            <p>
+              <strong>Endereço:</strong>
+              <span id="rua"> <%= enderecos[0].rua %> </span>, <span id="numero"><%= enderecos[0].numero %></span>
+            </p>
+            <p>
+              <strong>Complemento: </strong>
+              <span id="complemento"><%= enderecos[0].complemento %></span>
+            </p>
+            <p><strong>Bairro: </strong> <span id="bairro"><%= enderecos[0].bairro %></span></p>
+            <p><strong>Cidade: </strong> <span id="cidade"> <%= enderecos[0].cidade %> </span> - <span id="estado"><%= enderecos[0].estado %></span></p>
+            <p>
+              <strong>CEP: </strong>
+              <span id="cep"><%=enderecos[0].cep%></span>
+            </p>
+          </div>
+
+          <h4 class="d-flex justify-content-between align-items-center mb-3" id="title-tipo-envio">
+            <span class="text-muted">Tipo de Envio</span>
+          </h4>
+          <div class="list-group-item form-group form-tipo-envio">
+            <% tiposEnvio.forEach(tipoEnvio => { %>
+            <div class="custom-control custom-radio my-1">
+              <input class="custom-control-input" id="<%= tipoEnvio.nomeTipoEnvio %>" name="tipoEnvioId" required type="radio" value="<%= tipoEnvio.id %>" />
+              <label class="custom-control-label" for="<%= tipoEnvio.nomeTipoEnvio %>"> <%= tipoEnvio.nomeTipoEnvio %> </label>
+            </div>
+            <% }) %>
+            <div class="help-block with-errors"></div>
+          </div>
+
+          <% } else { %>
+          <a href="/minha-conta/cadastrarendereco" class="btn btn-primary">Cadastrar Novo Endereço</a>
+          <% } %>
+        </div>
+
+        <div class="col-md">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Cupom de Desconto</span>
+          </h4>
+          <div class="list-group-item mb-4">
+            <div class="col-md form-cupom">
+              <label class="custom-control-label">Cupom</label>
+              <input id="codigoCupom" class="form-control mb-3" />
+              <input type="hidden" id="cupomId" name="cupomId" />
+              <button id="btnAplicarCupom" class="btn btn-secondary w-100">Aplicar</button>
+            </div>
+          </div>
+
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Pagamento</span>
+          </h4>
+          <div class="list-group-item form-group">
+            <% tiposPagamento.forEach(tipoPagamento => { %>
+            <div class="custom-control custom-radio my-1">
+              <input class="custom-control-input" id="<%= tipoPagamento.nomeTipoPagamento %>" name="tipoPagamentoId" required type="radio" value="<%= tipoPagamento.id %>" />
+              <label class="custom-control-label" for="<%= tipoPagamento.nomeTipoPagamento %>"> <%= tipoPagamento.nomeTipoPagamento %> </label>
+            </div>
+            <% }) %>
+
+            <div id="campos-cartao"></div>
+            <div class="help-block with-errors"></div>
+          </div>
+        </div>
+
+        <div class="col-md mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Resumo do Pedido</span>
+            <!-- <span class="badge badge-secondary badge-pill"> 3 </span> -->
+          </h4>
+          <ul class="list-group mb-3">
+            <!-- divItens: LOOP para lista de itens do carrinho -->
+            <div id="divItens"></div>
+            <!-- divItens: Fim do LOOP  -->
+          </ul>
+
+          <%- include('components/error-alert', {error}) %>
+          <button class="btn btn-outline-success btn-lg btn-block" type="submit">Finalizar Compra</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<%- include('components/foot') %>

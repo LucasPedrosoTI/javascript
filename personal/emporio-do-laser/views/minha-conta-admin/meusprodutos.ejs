@@ -1,0 +1,131 @@
+<%- include('../components/head') %> <%- include('../components/navbar') %>
+
+<section>
+  <div class="corpo container-fluid text-branco">
+    <div class="row g-1">
+      <%- include('../components/lateral-menu') %>
+
+      <div class="col-sm px-3">
+        <%- include('../components/error-alert', {error}) %>
+        <h4>Produtos</h4>
+        <hr class="mb-4" />
+
+        <!-- CODIGO AQUI -->
+        <div class="row g-3 max-width-610p">
+          <div class="col-sm-12">
+            <div class="list-group">
+              <div class="list-group-item list-group-item-action mb-3" aria-current="true">
+                <div class="row g-1">
+                  <a href="/minha-conta/cadastrarproduto" class="col-sm-12 btn btn-primary">Cadastrar Produto</a>
+                </div>
+              </div>
+              <% produtos.forEach(produto => { %>
+              <div class="list-group-item list-group-item-action mb-3 <%= produto.deletedAt && "o-70" %>" aria-current="true">
+                <div class="row g-1 mb-2">
+                  <div class="col-sm mx-1 mb-1">
+                    <img src="<%= produto.ImagemProdutos[0].nomeImagem %>" style="border: 1px solid gray" />
+                  </div>
+                  <div class="col-sm-8 mx-1">
+                    <div class="mb-2" align="center">
+                      <h4><%= produto.nomeProduto %></h4>
+                    </div>
+                    <div class="mb-2">
+                      <strong>Descrição:</strong>
+                      <span><%= produto.descricao %></span>
+                    </div>
+                    <div class="mb-2">
+                      <strong>Personalizavel:</strong>
+                      <span><%= produto.personalizavel ? 'Sim' : 'Não' %></span>
+                    </div>
+                    <div>
+                      <strong>Categoria:</strong>
+                      <span class="mb-1"><%= produto.Categorium.nomeCategoria %></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row g-1">
+                  <div class="col-sm nav-item dropdown">
+                    <div class="btn btn-outline-secondary btn-tabela dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Editar</div>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li>
+                        <form class="col-sm" action="/minha-conta/editarproduto" method="get">
+                          <input type="hidden" name="produtoId" value="<%= produto.id %>" />
+                          <input type="submit" value="Produto" class="btn btn-outline-secondary btn-tabela dropdown" />
+                        </form>
+                      </li>
+                      <li>
+                        <form class="col-sm" action="/minha-conta/tamanhos" method="get">
+                          <input type="hidden" name="produtoId" value="<%= produto.id %>" />
+                          <input type="submit" value="Tamanhos" class="btn btn-outline-secondary btn-tabela" />
+                        </form>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="col-sm">
+                    <!-- Button trigger modal Editar -->
+                    <button type="button" class="btn btn-outline-secondary w-100" data-bs-toggle="modal" data-bs-target="#id_<%= produto.id %>">Estoque</button>
+                  </div>
+                  
+                  <% const acaoTxt = produto.deletedAt ? "Habilitar" : "Desabilitar" %>
+                  <% const acao = acaoTxt.toLowerCase() %>
+
+                  <form class="col-sm" action="/produtos/habilitar-desabilitar?_method=PUT" method="post">
+                    <input type="hidden" name="produtoId" value="<%= produto.id %>" />
+                    <input type="hidden" name="acao" value="<%= acao %>" />
+                    <input type="submit" value="<%= acaoTxt %>" class="btn btn-outline-<%= produto.deletedAt ? "success" : "danger" %> btn-tabela" onClick="if(!(confirm('Deseja mesmo <%=
+                    acao %> este produto?'))) return false" />
+                  </form>
+                </div>
+              </div>
+
+              <!-- Modal estoque -->
+              <div class="modal fade" id="id_<%= produto.id %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content text-black">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel"><%= produto.nomeProduto %></h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <% produto.TamanhoProdutos.forEach(tamanho => { %>
+
+                      <form action="/produtos/alterar-estoque?_method=PUT" method="post">
+                        <div class="row g-1 mb-3">
+                          <div class="col-sm">
+                            <label class="copy-h6-format">Tamanho: <%= tamanho.tamanho %></label>
+                            <div class="form-control">Estoque Atual: <%= tamanho.quantidade %></div>
+                          </div>
+                          <div class="col-sm">
+                            <label class="copy-h6-format">Entrada</label>
+                            <input type="number" name="entrada" class="form-control" placeholder="Ex: 1" />
+                          </div>
+                          <div class="col-sm-3 d-flex" style="align-items: flex-end">
+                            <input type="hidden" name="id" value="<%= tamanho.id %>" />
+                            <input type="hidden" name="estoque" value="<%= tamanho.quantidade %>" />
+                            <button type="submit" class="btn btn-outline-success btn-tabela">Salvar</button>
+                          </div>
+                        </div>
+                      </form>
+
+                      <% }); %>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sair</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- fim Modal estoque -->
+
+              <% }); %>
+            </div>
+          </div>
+        </div>
+        <!-- FIM DO CODIGO -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../components/foot') %>

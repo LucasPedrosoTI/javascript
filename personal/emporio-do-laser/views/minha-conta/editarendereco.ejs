@@ -1,0 +1,12 @@
+<%- include('../components/head') %> <%- include('../components/navbar') %>
+
+<section>
+  <div class="corpo container-fluid text-branco">
+    <div class="row g-1">
+      <%- include('../components/lateral-menu') %> 
+      <%- include('../components/form-cadastrar-endereco', {action: '/usuarios/alterar-endereco?_method=PUT', titulo: 'Alterar Endereço'}) %>
+    </div>
+  </div>
+</section>
+
+<%- include('../components/foot') %>
