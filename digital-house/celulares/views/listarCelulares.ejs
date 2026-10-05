@@ -1,0 +1,80 @@
+<%- include('./parts/head', {title: 'Pedrada Celulares'}) %>
+
+    <%- include('parts/navbar') %>
+
+        <table class="table table-hover mt-1" border="1" cellpadding="10">
+            <thead class="thead-light">
+                <tr class="align-middle">
+                    <th class="text-center" scope="col">#</th>
+
+                    <th class="text-center" scope="col">
+                        <a class="" href="?key=<%=key%>&max=<%= max %>&order=nome-asc">
+                            Modelo
+                        </a>
+                    </th>
+                    <th class="text-center" scope="col">
+                        <a href="?key=<%=key%>&max=<%= max %>&order=preco-asc">Preço</a>
+                    </th>
+                    <th class="text-center" scope="col" colspan="2">Ações</th>
+                </tr>
+            </thead>
+            <% celulares.forEach(celular => { %>
+                <tr class="text-center align-middle">
+                    <td>
+                        <img src="<%= celular.img %>" alt="<%= celular.nome %>" height="100" width="100" />
+                    </td>
+                    <td class="align-middle">
+                        <a href="/celulares/<%= celular.id %> ">
+                            <%= celular.nome %>
+                        </a>
+                    </td>
+                    <td class="align-middle">
+                        <%= celular.preco.toString('pt-br', { minimumFractionDigits: 2,
+    style: 'currency', currency: 'BRL' }) %>
+                    </td>
+                    <td class="align-middle">
+                        <a class="btn btn-success" href="/celulares/<%= celular.id %>/editar">Editar</a>
+                    </td>
+                    <td class="align-middle">
+                        <form method="POST" action="/celulares/deletar/<%=celular.id%>?_method=DELETE">
+                            <button class="btn btn-danger" type="submit">Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }) %>
+        </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <% for( let nrPagina = 1; nrPagina <= totalPagina; nrPagina++ ) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="?max=<%= max %>&order=<%= order %>&page=<%= nrPagina %>&key=<%= key %>">
+                            <%= nrPagina %>
+                        </a>
+                    </li>
+                    <% } %>
+            </ul>
+        </nav>
+
+        <%- include('parts/foot.ejs') %>
+
+
+
+            <%# 
+    <form action="/celulares/class" method="get">
+        <input type="hidden" name="minToMax" value="true" />
+        <button class="btn btn-outline-info" type="submit">Menor Preço Primeiro</button>
+    </form> 
+    %>
+                <%#
+        <form action="/celulares/class" method="get">
+            <input type="hidden" name="maxToMin" value="true" />
+            <button class="btn btn-outline-info" type="submit">Maior Preço Primeiro</button>
+        </form>
+        %>
+                    <%#
+            <form action="/celulares/class" method="get">
+                <input type="hidden" name="alfabetica" value="true" />
+                <button class="btn btn-outline-info" type="submit">Ordem Alfabética</button>
+            </form>
+            %>
