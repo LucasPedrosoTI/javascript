@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <table border="1">
+      <thead>
+        <th>MONTH</th>
+        <th>DAY</th>
+        <th>TYPE</th>
+        <th>ID</th>
+        <th>DESCRIPTION</th>
+        <th>ACTION</th>
+        <th>TIME</th>
+        <th>BUSINESS</th>
+      </thead>
+      <tbody>
+      <% for( let i = 0; i < cases.length; i++ ) { %>
+        <tr>
+          <td><%= cases[i].month %></td>
+          <td><%= cases[i].day %></td>
+          <td><%= cases[i].type %></td>
+          <td><%= cases[i].id %></td>
+          <td><%= cases[i].description %></td>
+          <td><%= cases[i].action %></td>
+          <td><%= cases[i].time %></td>
+          <td><%= cases[i].business %></td>
+        </tr>
+      <% } %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="7">Total</td>
+          <td>
+            
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </body>
+</html>
